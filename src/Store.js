@@ -17,8 +17,11 @@ class Store extends ReduceStore{
   }
 
   reduce(state, action) {
+    console.log('flux-store action: ');
+    console.log(action);
+        
     const { type, save } = this.props;
-    
+
     switch (action.type) {
       case `${type}/create`:{
         return state.set('value',action.value);
