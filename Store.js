@@ -19,7 +19,7 @@ class Store extends ReduceStore{
   reduce(state, action) {
     console.log('flux-store action: ');
     console.log(action);
-        
+
     const { type, save } = this.props;
 
     switch (action.type) {
@@ -28,11 +28,14 @@ class Store extends ReduceStore{
         break;
       }
       case `${type}/created`:
+			case `${type}/update`:
+			case `${type}/updated`:
+      case `${type}/created`:
       case `${type}/update`:{
         return state.update('value', value => value.merge(action.value));
         break;
       }
-      case `${type}/updated`:
+      case `${type}/delete`:
       default:
         return state;
         break;
