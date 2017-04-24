@@ -18,6 +18,7 @@ class Store extends ReduceStore{
 
   reduce(state, action) {
     const { type, save } = this.props;
+    
     switch (action.type) {
       case `${type}/create`:{
         return state.set('value',action.value);
