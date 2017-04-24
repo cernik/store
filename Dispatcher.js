@@ -1,9 +1,9 @@
-import { Dispatcher as FluxDispatcher } from 'flux';
+import { Dispatcher } from 'flux';
 
-class Dispatcher extends FluxDispatcher {
+class _Dispatcher extends Dispatcher {
   dispatch(action = {}) {
     super.dispatch(action);
   }
 }
 
-export default new Dispatcher();
+export default _Dispatcher;
