@@ -1,3 +1,5 @@
+import Store from './Store';
+import Dispatcher from './Dispatcher';
 
-module.exports.Dispatcher = require('./Dispatcher');
-module.exports.Store = require('./Store');
+export default Store;
+export { Store, Dispatcher };
