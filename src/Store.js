@@ -5,7 +5,7 @@ import Dispatcher from './Dispatcher';
 
 class Store extends ReduceStore{
   constructor(props) {
-    super(AppDispatcher);
+    super(Dispatcher);
     this.props = props;
     const { type, value } = this.props;
 
