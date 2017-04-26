@@ -1,11 +1,10 @@
 // @flow
-
 import { Dispatcher as FluxDispatcher } from 'flux';
 
 type Action = {
-  type: string;
+  type: string,
   data?: Object
-}
+};
 
 class Dispatcher extends FluxDispatcher {
   dispatch(action: Action) {

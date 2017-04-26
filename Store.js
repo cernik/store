@@ -10,19 +10,20 @@ type Action = {
   data?: Object
 };
 
-type Props = {
-  type: string,
+type StoreProps = {
+  name: string,
   value: Object
 };
 
+
 class Store extends ReduceStore{
 
-  constructor(props: Props):void {
+  constructor(props: StoreProps): void {
     super(Dispatcher);
     this.props = props;
 
-    const { type, value } = this.props;
-    Dispatcher.dispatch({type: `${type}/create`, data: value});
+    const { name, value } = this.props;
+    Dispatcher.dispatch({type: `${name}/create`, data: value});
   }
 
   getInitialState(): State {
@@ -30,18 +31,18 @@ class Store extends ReduceStore{
   }
 
   reduce(state: State, action: Action): State {
-    const { type } = this.props;
+    const { name } = this.props;
 
     switch (action.type) {
-      case `${type}/create`:{
+      case `${name}/create`:{
         return state.set('value',action.data);
       }
-      case `${type}/created`:
-			case `${type}/update`:
-			case `${type}/updated`:{
+      case `${name}/created`:
+			case `${name}/update`:
+			case `${name}/updated`:{
         return state.update('value', value => value.merge(action.data));
       }
-      case `${type}/delete`:
+      case `${name}/delete`:
       default:
         return state;
     }
