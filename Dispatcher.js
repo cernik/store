@@ -8,6 +8,7 @@ type Action = {
 
 class Dispatcher extends FluxDispatcher {
   dispatch(action: Action) {
+    console.log(action);
     super.dispatch(action);
   }
 }
