@@ -13,7 +13,7 @@ type Action = {
 
 type StoreProps = {
   name: string,
-  value: Object,
+  initialData: Object,
   storage?: boolean,
 };
 
