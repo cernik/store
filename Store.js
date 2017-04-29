@@ -13,6 +13,7 @@ type Action = {
 
 type StoreProps = {
   name: string,
+  initialCreate: boolean,
   initialData: Object,
   storage?: boolean,
 };
@@ -23,8 +24,8 @@ class Store extends ReduceStore{
     super(Dispatcher);
     this.props = props;
 
-    const { name, initialData } = this.props;
-    Dispatcher.dispatch({ type: `${name}/create`, data: initialData });
+    const { name, initialData, initialCreate = false } = this.props;
+    initialCreate && Dispatcher.dispatch({ type: `${name}/create`, data: initialData });
   }
 
   getInitialState(): State {
@@ -36,6 +37,7 @@ class Store extends ReduceStore{
 
   reduce(state: State, action: Action): State {
     const { name } = this.props;
+    console.log('store reducer: ' + action.type);
     switch (action.type) {
       case `${name}/create`:{
 
