@@ -1,24 +1,13 @@
 // @flow
-import { Map, Record } from 'immutable';
+import keyMirror from 'keymirror';
+import { Map, Record, List } from 'immutable';
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from './Dispatcher';
+import StoreStatusTypes from './StoreStatusTypes';
 import StorageManager from './StorageManager';
+import type { State, Action, StoreProps } from './TypeDefinitions';
 
-type State = Map | Record;
-
-type Action = {
-  type: string,
-  data?: Object
-};
-
-type StoreProps = {
-  name: string,
-  initialCreate: boolean,
-  initialData: Object,
-  storage?: boolean,
-};
-
-class Store extends ReduceStore{
+export default class Store extends ReduceStore {
 
   constructor(props: StoreProps): void {
     super(Dispatcher);
@@ -31,22 +20,23 @@ class Store extends ReduceStore{
   getInitialState(): State {
     return Map({
       data: Map(),
-      status: 0
+      status: ''
     });
   }
 
   reduce(state: State, action: Action): State {
     const { name } = this.props;
-    console.log('store reducer: ' + action.type);
+
     switch (action.type) {
       case `${name}/create`:{
 
+        const data = action.data;
+
         if ( this.props.storage ){
-          StorageManager.create(name)
-          .then( data => Dispatcher.dispatch({ type: `${name}/created`, data }) );
+          StorageManager.create(name).then( data => Dispatcher.dispatch({ type: `${name}/created`, data }) );
         }
 
-        return state.set('data', action.data );
+        return state.set( 'data', data ).set( 'status', StoreStatusTypes.CREATING );
       }
 			case `${name}/update`:{
 
@@ -56,7 +46,7 @@ class Store extends ReduceStore{
           StorageManager.update(name, data)
         }
 
-        return state.set('data', data );
+        return state.set('data', data ).set( 'status', StoreStatusTypes.UPDATING );
       }
       case `${name}/created`:
 			case `${name}/updated`:{
@@ -66,25 +56,22 @@ class Store extends ReduceStore{
         if ( this.props.storage ){
           StorageManager.update(name, data)
         }
-        return state.set('data', data ).set('status', 1);
+        return state.set('data', data ).set( 'status', StoreStatusTypes.NONE );
       }
       case `${name}/delete`:{
 
+        const data = new Map();
+
         if ( this.props.storage ){
-          StorageManager.delete(name)
-          .then( data => Dispatcher.dispatch({ type: `${name}/deleted`, data }) );
+          StorageManager.delete(name).then( data => Dispatcher.dispatch({ type: `${name}/deleted`, data }) );
         }
 
-        return  Map({
-          data: Map(),
-          status: 0
-        });
+        return state.set( 'data', data ).set( 'status', StoreStatusTypes.DELETING );
       }
       case `${name}/deleted`:
+        return state.set( 'status', StoreStatusTypes.NONE );
       default:
         return state;
     }
   }
 }
-
-export default Store;
