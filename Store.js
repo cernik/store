@@ -1,6 +1,6 @@
 // @flow
 import keyMirror from 'keymirror';
-import { Map, Record, List } from 'immutable';
+import { Map, Record, List, fromJS } from 'immutable';
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from './Dispatcher';
 import StoreStatusTypes from './StoreStatusTypes';
@@ -18,8 +18,8 @@ export default class Store extends ReduceStore {
   }
 
   getInitialState(): State {
-    return Map({
-      data: Map(),
+    return fromJS({
+      data: {},
       status: ''
     });
   }
